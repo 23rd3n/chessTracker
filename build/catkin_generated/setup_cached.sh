@@ -8,4 +8,4 @@
 
 # modified environment variables
 export PATH='/opt/ros/noetic/bin:/usr/local/cuda/bin/:/usr/local/cuda/bin/:/home/tueilmt-lab-pc/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
-export PWD='/home/student/Desktop/pphauRos1_ws/build'
+export PWD='/home/student/pphauRos1_ws/build'

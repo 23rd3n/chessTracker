@@ -38,11 +38,11 @@ def evaluateMap (BoxLimits, pieceList, GridLimits, probs):
     prob_board = [[[j//14 for j in range(15)] for _ in range(8)] for _ in range(8)]
 
     for thisPieces, boxlimit, probOfPieces, thisGridLimits  in zip(pieceList, BoxLimits, probs, GridLimits  ):
-        print("Cam1:")
+        #print("Cam1:")
         pieceLocs = PieceLocator(boxlimit)
-        print(pieceLocs,thisPieces, boxlimit, probOfPieces, thisGridLimits)
+        #print(pieceLocs,thisPieces, boxlimit, probOfPieces, thisGridLimits)
         for piece, pieceLoc, pieceProb in zip(thisPieces, pieceLocs, probOfPieces):
-            print("Piece:",piece, pieceLoc, pieceProb )
+            #print("Piece:",piece, pieceLoc, pieceProb )
             for row in range(8):
                 for col in range(8):
                     ind0 = 9*row + col
@@ -51,13 +51,13 @@ def evaluateMap (BoxLimits, pieceList, GridLimits, probs):
                     ind3 = ind0 + 10
                     
                     if inside(pieceLoc, thisGridLimits[ind0], thisGridLimits[ind1], thisGridLimits[ind3], thisGridLimits[ind2] ):
-                        print(pieceLoc, thisGridLimits[ind0], thisGridLimits[ind1], thisGridLimits[ind3], thisGridLimits[ind2], "**" )
+                        #print(pieceLoc, thisGridLimits[ind0], thisGridLimits[ind1], thisGridLimits[ind3], thisGridLimits[ind2], "**" )
                         prob_board[row][col][piece] +=  pieceProb
-                    else:
-                        print(pieceLoc, thisGridLimits[ind0], thisGridLimits[ind1], thisGridLimits[ind3], thisGridLimits[ind2] )
+                    #else:
+                        #print(pieceLoc, thisGridLimits[ind0], thisGridLimits[ind1], thisGridLimits[ind3], thisGridLimits[ind2] )
     
     board = [[ prob_board[a][b].index(max(prob_board[a][b])) for b in range(8)] for a in range(8)]
-    print(prob_board)            
+    #print(prob_board)            
     return board
 
 
@@ -106,23 +106,23 @@ class Im2YoloManager:
         ch_board_flag = msg_in[1]
         n1 = msg_in[2]
         n2 = msg_in[3]
-        print(HandState,ch_board_flag,n1,n2)
+        #print(HandState,ch_board_flag,n1,n2)
         
         obj_list1 = msg_in[4:(n1+4)]
         obj_list2 = msg_in[(n1+4):(n1+n2+4)]
         pieceList = [ obj_list1,obj_list2 ]
-        print(pieceList)
+        #print(pieceList)
         
         obj_boundries1 = [msg_in[i:(i+4)] for i in range(n1 + n2 + 4, 5*n1 + n2 + 4, 4)]
         obj_boundries2 = [msg_in[i:(i+4)] for i in range(5*n1 + n2 + 4, 5*n1 + 5*n2 + 4, 4)]
         BoxLimits = [ obj_boundries1,obj_boundries2 ]
-        print(BoxLimits)
+        #print(BoxLimits)
         
         probs1 = msg_in[(5*n1 + 5*n2 + 4):(6*n1 + 5*n2 + 4) ]
         probs2 = msg_in[(6*n1 + 5*n2 + 4):(6*n1 + 6*n2 + 4) ]
         probs = [probs1, probs2]
-        print(probs)
-        print("length of probs",len(probs))
+        #print(probs)
+        #print("length of probs",len(probs))
         
         if ch_board_flag:
             cb1 = msg_in[-324:-162]
@@ -141,9 +141,9 @@ class Im2YoloManager:
         #print(f"Veysel {out_msg}")
         # self.id += 1
         # name = "yolo2stat" + str(self.id) + ".txt"
-        # stream_string = ', '.join(map(str, out_msg))  # This creates a comma-separated string from the list
-        # with open(name, 'w') as file:
-        #     file.write(stream_string)
+        stream_string = ' '.join(map(str, out_msg[1:]))  # This creates a comma-separated string from the list
+        with open('GTpieces.txt', 'a') as file:
+            file.write(stream_string + '\n')
         dimString.label = yol.layout.dim[0].label + '/' + str(int(1000*time.perf_counter() - milsec_st)) 
         cmd.layout.dim = [dimString]
 

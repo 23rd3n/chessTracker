@@ -134,9 +134,9 @@ class Im2YoloManager:
         #print(f"Veysel {out_msg}")
         # self.id += 1
         # name = "yolo2stat" + str(self.id) + ".txt"
-        # stream_string = ', '.join(map(str, out_msg))  # This creates a comma-separated string from the list
-        # with open(name, 'w') as file:
-        #     file.write(stream_string)
+        stream_string = ' '.join(map(str, out_msg[1:]))  # This creates a comma-separated string from the list
+        with open('pieces.txt', 'a') as file:
+            file.write(stream_string + '\n')
         dimString.label = yol.layout.dim[0].label + '/' + str(int(1000*time.perf_counter() - milsec_st)) 
         cmd.layout.dim = [dimString]
 

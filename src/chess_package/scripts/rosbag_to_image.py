@@ -16,8 +16,8 @@ class Ros2ImManager:
 
     def __init__(self) -> None:
         rospy.init_node("ros2im")
-        self.c1_sub = Subscriber("/camera/138422075916/color/image_raw", Image)
-        self.c2_sub = Subscriber( "/camera/137322071489/color/image_raw", Image)
+        self.c1_sub = Subscriber("/camera/C138422075916/color/image_raw", Image)
+        self.c2_sub = Subscriber( "/camera/C137322071489/color/image_raw", Image)
 
         self.pub =rospy.Publisher("/im", UInt16MultiArray, queue_size=10)
 
