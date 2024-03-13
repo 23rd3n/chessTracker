@@ -1,0 +1,2 @@
+chess_package
+-DCATKIN_DEVEL_PREFIX=/home/student/pphauRos1_ws/devel -DCMAKE_INSTALL_PREFIX=/home/student/pphauRos1_ws/install -G Unix Makefiles
