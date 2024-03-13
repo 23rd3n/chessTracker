@@ -5,6 +5,8 @@ import cv2 as cv
 import torch.cuda
 import time
 
+ch_flag = True
+
 def __main__():
     #read the image, frame will be in the place of img
     img =  cv.imread("frame001845.png")
@@ -17,26 +19,28 @@ def __main__():
     handflag1 = detectHands(bboxes1.tolist(), classes1.tolist())
     handflag2 = detectHands(bboxes2.tolist(), classes2.tolist())
 
-    #get checkerboard coordinates
-    ch_frame1, bbox_ch1 = CheckerboardFrame(img1, bboxes1, classes1)
-    ch_frame2, bbox_ch2 = CheckerboardFrame(img2, bboxes2, classes2)
-
-
-    sorted_coord1 = detectCheckerboardCoords(ch_frame1,bbox_ch1)
-    sorted_coord2 = detectCheckerboardCoords(ch_frame2,bbox_ch2)
-
-    #uncomment for visualization
-    DrawCheckerboard(img1,sorted_coord1)
-    DrawCheckerboard(img2,sorted_coord2)
-    #get piece coordinates
 
     piece_bboxes1, piece_classes1 = PieceDetection(bboxes1, classes1)
     piece_bboxes2, piece_classes2 = PieceDetection(bboxes2, classes2)
 
-    #construct the stream
-    stream = concatStream(handflag1,handflag2, piece_classes1, piece_classes2, piece_bboxes1,piece_bboxes2, probs1, probs2, sorted_coord1, sorted_coord2)
-    print(stream)
+    if ch_flag:
+        #get checkerboard coordinates
+        ch_frame1, bbox_ch1 = CheckerboardFrame(img1, bboxes1, classes1)
+        ch_frame2, bbox_ch2 = CheckerboardFrame(img2, bboxes2, classes2)
 
+        sorted_coord1 = detectCheckerboardCoords(ch_frame1,bbox_ch1)
+        sorted_coord2 = detectCheckerboardCoords(ch_frame2,bbox_ch2)
+
+        #uncomment for visualization
+        DrawCheckerboard(img1,sorted_coord1)
+        DrawCheckerboard(img2,sorted_coord2)
+        #get piece coordinates
+
+        stream = concatStreamwcoord(handflag1,handflag2, piece_classes1, piece_classes2, piece_bboxes1,piece_bboxes2, probs1, probs2, sorted_coord1, sorted_coord2)
+    else:
+        concatStreamwcoord_nocoord(handflag1,handflag2, piece_classes1, piece_classes2, piece_bboxes1,piece_bboxes2, probs1, probs2)   
+    
+    print(stream)
     cv.imshow("img1",img1)
     cv.imshow("img2", img2)
 
@@ -324,6 +328,11 @@ def YOLOdetect(model, frame1, frame2):
 
     return bboxes1, classes1, probs1, bboxes2, classes2, probs2
    
+def PieceDetection(bboxes, classes):
+    mask = (classes != 13) & (classes != 11)
+    indx = np.where(mask)[0]
+
+    return np.int0(bboxes[indx]), classes[indx]
 
 def CheckerboardFrame(frame, bboxes, classes):
     indx = np.where(classes == 11)[0]
@@ -336,7 +345,7 @@ def CheckerboardFrame(frame, bboxes, classes):
 
     return ch_frame, ch_coords
 
-def concatStream(handflag1,handflag2, piece_classes1, piece_classes2, piece_bboxes1,piece_bboxes2, probs1, probs2, sorted_coord1, sorted_coord2):
+def concatStreamwcoord(handflag1,handflag2, piece_classes1, piece_classes2, piece_bboxes1,piece_bboxes2, probs1, probs2, sorted_coord1, sorted_coord2):
     stream = []
     stream.append(handflag1)
     stream.append(handflag2)
@@ -359,6 +368,30 @@ def concatStream(handflag1,handflag2, piece_classes1, piece_classes2, piece_bbox
     if detFlag:
         stream.extend(sorted_coord1.reshape(-1).tolist())
         stream.extend(sorted_coord2.reshape(-1).tolist())
+        global ch_flag 
+        ch_flag = False
+
+    return stream
+
+def concatStreamwcoord_nocoord(handflag1,handflag2, piece_classes1, piece_classes2, piece_bboxes1,piece_bboxes2, probs1, probs2):
+    stream = []
+    stream.append(handflag1)
+    stream.append(handflag2)
+    
+    stream.append(0)
+
+    stream.append(len(piece_classes1.tolist()))
+    stream.append(len(piece_classes2.tolist()))
+
+    stream.extend(piece_classes1.tolist())
+    stream.extend(piece_classes2.tolist())
+    
+    stream.extend(piece_bboxes1.reshape(-1).tolist())
+    stream.extend(piece_bboxes2.reshape(-1).tolist())
+
+    stream.extend(probs1.tolist())
+    stream.extend(probs2.tolist())
+
 
     return stream
 
