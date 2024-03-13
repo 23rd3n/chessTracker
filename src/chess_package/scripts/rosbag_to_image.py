@@ -9,11 +9,8 @@ from cv_bridge import CvBridge
 import threading
 import time
 import cv2 
-
 queue_size =500
 coupling_delay = .035
-
-
 
 class Ros2ImManager:
 
