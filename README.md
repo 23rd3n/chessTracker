@@ -7,10 +7,10 @@
 - Veysel Cemil Colak
 
 ### Codes can be found in the following branches:
-**accuracy** : Multi-camera based branch with accuracy checks 
-**accuracySingleCamera** : Multi-camera based branch with accuracy checks 
+- **accuracy** : Multi-camera based branch with accuracy checks 
+- **accuracySingleCamera** : Multi-camera based branch with accuracy checks 
 
-The other branches are behind these final branches. However they show the process that how we developed the whole model.
+- The other branches are behind these final branches. However they show the process that how we developed the whole model.
 
 
 
