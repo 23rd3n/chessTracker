@@ -368,7 +368,7 @@ class Im2YoloManager:
         rospy.init_node("im2yolo")
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
         print(f'Using device: {device}')
-        self.model = YOLO('/home/student/pphauRos1_ws/models/bestn.pt').to(device)
+        self.model = YOLO('/home/student/pphauRos1_ws/models/bestm.pt').to(device)
 
         self.pub =rospy.Publisher("/yolo_res", UInt16MultiArray, queue_size=10)
         self.sub = rospy.Subscriber ("/im", UInt16MultiArray, callback=self.pose_callback)
