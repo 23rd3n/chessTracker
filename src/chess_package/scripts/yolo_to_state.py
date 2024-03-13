@@ -4,20 +4,32 @@ from std_msgs.msg import UInt16MultiArray
 from std_msgs.msg import MultiArrayDimension
 import time
 
-def dst(pt1, pt2):
-    return ((pt1[0]-pt2[0])**2 + (pt1[1]-pt2[1])**2 )**.5
+def stateManager(BoxLimits, pieceList, GridLimits, HandState):
 
-def area(pt1, pt2, pt3):
-    l1 = dst(pt1,pt2)
-    l2 = dst(pt2,pt3)
-    l3 = dst(pt1,pt3)
-    s = (l1+l2+l3)/2
-    return (abs(s*(s-l1)*(s-l2)*(s-l3)))**.5
+    if not hasattr(stateManager, "state"):
+        stateManager.state = 1
+        stateManager.map = evaluateMap(BoxLimits, pieceList, GridLimits)
 
+    if stateManager.state == 1:
+        if HandState:
+            stateManager.state = 0
+    elif stateManager.state == 3:
+        if HandState:
+            stateManager.state = 2
+    elif stateManager.state == 0:
+        if not HandState:
+            stateManager.map = evaluateMap(BoxLimits, pieceList, GridLimits)  
+            stateManager.state = 3  
+    elif stateManager.state == 2:
+        if not HandState:
+            stateManager.map = evaluateMap(BoxLimits, pieceList, GridLimits)
+            stateManager.state = 1
 
-def inside(pt, pt1, pt2, pt3, pt4):
-     return not area(pt, pt1, pt2) + area(pt, pt3, pt2) + area(pt, pt4, pt3) + area(pt, pt1, pt4) - area(pt3, pt1, pt2) - area(pt1, pt4, pt3)>3
+    return stateManager.map, stateManager.state
 
+def evaluateMap (BoxLimits, pieceList, GridLimits):
+    pieceLocs = PieceLocator(BoxLimits)
+    return BoardEstimator(pieceLocs, pieceList, GridLimits)
 
 def PieceLocator(BoxLimits):
 
@@ -31,56 +43,37 @@ def PieceLocator(BoxLimits):
     
     return pieceLocs
 
+def dst(pt1, pt2):
+    return ((pt1[0]-pt2[0])**2 + (pt1[1]-pt2[1])**2 )**.5
 
-def evaluateMap (BoxLimits, pieceList, GridLimits, probs):
+def area(pt1, pt2, pt3):
+    l1 = dst(pt1,pt2)
+    l2 = dst(pt2,pt3)
+    l3 = dst(pt1,pt3)
+    s = (l1+l2+l3)/2
+    return (s*(s-l1)*(s-l2)*(s-l3))**.5
 
-    board = [[14 for _ in range(8)] for _ in range(8)]
-    prob_board = [[[j//14 for j in range(15)] for _ in range(8)] for _ in range(8)]
+def inside(pt, pt1, pt2, pt3, pt4):
+     #print(area(pt, pt1, pt2) + area(pt, pt3, pt2) + area(pt, pt4, pt3) + area(pt, pt1, pt4))
+     #print(area(pt3, pt1, pt2) + area(pt1, pt4, pt3))
+     return not area(pt, pt1, pt2) + area(pt, pt3, pt2) + area(pt, pt4, pt3) + area(pt, pt1, pt4) - area(pt3, pt1, pt2) - area(pt1, pt4, pt3)>3
 
-    for thisPieces, boxlimit, probOfPieces, thisGridLimits  in zip(pieceList, BoxLimits, probs, GridLimits  ):
-        
-        pieceLocs = PieceLocator(boxlimit)
-        
-        for piece, pieceLoc, pieceProb in zip(thisPieces, pieceLocs, probOfPieces):
 
-            for row in range(8):
-                for col in range(8):
-                    ind0 = 9*row + col
-                    ind1 = ind0 + 1
-                    ind2 = ind0 + 9
-                    ind3 = ind0 + 10
-                    
-                    if inside(pieceLoc, thisGridLimits[ind0], thisGridLimits[ind1], thisGridLimits[ind3], thisGridLimits[ind2] ):
-                        #print(pieceLoc, thisGridLimits[ind0], thisGridLimits[ind1], thisGridLimits[ind3], thisGridLimits[ind2] )
-                        prob_board[row][col][piece] +=  pieceProb
+def BoardEstimator(pieceLocs, pieceList, GridLimits):
+    board = [[14 for x in range(8)] for i in range(8)]
+    for piece, pieceLoc in zip(pieceList, pieceLocs):
     
-    board = [[ prob_board[a][b].index(max(prob_board[a][b])) for b in range(8)] for a in range(8)]
+        for row in range(8):
+            for col in range(8):
+                ind0 = 9*row + col
+                ind1 = ind0 + 1
+                ind2 = ind0 + 9
+                ind3 = ind0 + 10
+                
+                if inside(pieceLoc, GridLimits[ind0], GridLimits[ind1], GridLimits[ind3], GridLimits[ind2] ):
+                    board[row][col] = piece
                 
     return board
-
-
-def stateManager(BoxLimits, pieceList, GridLimits, HandState, probs):
-
-    if not hasattr(stateManager, "state"):
-        stateManager.state = 1
-        stateManager.map = evaluateMap(BoxLimits, pieceList, GridLimits, probs)
-
-    if stateManager.state == 1:
-        if HandState:
-            stateManager.state = 0
-    elif stateManager.state == 3:
-        if HandState:
-            stateManager.state = 2
-    elif stateManager.state == 0:
-        if not HandState:
-            stateManager.map = evaluateMap(BoxLimits, pieceList, GridLimits, probs)  
-            stateManager.state = 3  
-    elif stateManager.state == 2:
-        if not HandState:
-            stateManager.map = evaluateMap(BoxLimits, pieceList, GridLimits, probs)
-            stateManager.state = 1
-
-    return stateManager.map, stateManager.state
 
 
 class Im2YoloManager:
@@ -97,49 +90,40 @@ class Im2YoloManager:
     def pose_callback(self, yol: UInt16MultiArray):
         milsec_st =  1000*time.perf_counter()
         dimString = MultiArrayDimension()
-        cmd = UInt16MultiArray() 
-        msg_in = list(yol.data) 
+        cmd = UInt16MultiArray()
+        msg_in = list(yol.data)
+        n_obj = (len(msg_in)-163)//5
+        hand_flag = msg_in[0]
+        obj_list = msg_in[1:(n_obj+1)]
+        obj_boundries = []
+        for i in range(n_obj):
+            obj_boundries.append([ msg_in[4*i+n_obj+1], 
+                                  msg_in[4*i+n_obj+2], 
+                                  msg_in[4*i+n_obj+3], 
+                                  msg_in[4*i+n_obj+4] ])
         
-        HandState = msg_in[0]
-        ch_board_flag = msg_in[1]
-        n1 = msg_in[2]
-        n2 = msg_in[3]
-        
-        obj_list1 = msg_in[4:(n1+4)]
-        obj_list2 = msg_in[(n1+4):(n1+n2+4)]
-        pieceList = [ obj_list1,obj_list2 ]
-        
-        obj_boundries1 = [msg_in[i:(i+4)] for i in range(n1 + n2 + 4, 5*n1 + n2 + 4, 4)]
-        obj_boundries2 = [msg_in[i:(i+4)] for i in range(5*n1 + n2 + 4, 5*n1 + 5*n2 + 4, 4)]
-        BoxLimits = [ obj_boundries1,obj_boundries2 ]
-        
-        probs1 = msg_in[(5*n1 + 5*n2 + 4):(6*n1 + 5*n2 + 4) ]
-        probs2 = msg_in[(6*n1 + 5*n2 + 4):(6*n1 + 6*n2 + 4) ]
-        probs = [probs1, probs2]
-        
-        if ch_board_flag:
-            cb1 = msg_in[-324:-162]
-            cb1 = [cb1[i:(i+2)] for i in range(0, 162, 2)]
-            cb2 = msg_in[-162:]
-            cb2 = [cb2[i:(i+2)] for i in range(0, 162, 2)]
-            self.grids = [cb1, cb2]
-        
-        game_map,game_state = stateManager(BoxLimits, pieceList, self.grids , HandState, probs)
-        out_msg = []
-        out_msg.append(game_state)
-        out_msg += sum(game_map,[])
+        if sum(msg_in[-162:]):
+            grids = []
+            for j in range(81):
+                grids.append([msg_in[-2*j-2], msg_in[-2*j-1]])
+            grids.reverse()
+            self.grids = grids
 
-        cmd.data = out_msg
-        #print(f"Veysel {out_msg}")
-        # self.id += 1
-        # name = "yolo2stat" + str(self.id) + ".txt"
-        # stream_string = ', '.join(map(str, out_msg))  # This creates a comma-separated string from the list
-        # with open(name, 'w') as file:
-        #     file.write(stream_string)
-        dimString.label = yol.layout.dim[0].label + '/' + str(int(1000*time.perf_counter() - milsec_st)) 
-        cmd.layout.dim = [dimString]
+        if len(self.grids):
+            game_map,game_state = stateManager(obj_boundries, obj_list, self.grids, hand_flag)
+            out_msg = []
+        
+            out_msg.append(game_state)
 
-        self.pub.publish(cmd)
+            out_msg += sum(game_map,[])
+            #
+            cmd.data = out_msg
+            #print(f"Veysel {out_msg}")
+            dimString.label = yol.layout.dim[0].label + '/' + str(int(1000*time.perf_counter() - milsec_st)) 
+            cmd.layout.dim = [dimString]
+
+
+            self.pub.publish(cmd)
 
 if __name__ == '__main__':
     
