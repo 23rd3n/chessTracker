@@ -339,7 +339,6 @@ class Im2YoloManager:
             #print(f"Elsedeyim {cmd.data}")
         dimString.label = im.layout.dim[0].label + '/' + str(int(1000*time.perf_counter() - milsec_st)) 
         cmd.layout.dim = [dimString]
-
         self.pub.publish(cmd)
 
         # TO DO: publish stream(list) #

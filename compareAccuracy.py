@@ -33,9 +33,9 @@ for rowGt, rowPieces in zip(listGt, listPieces):
 mean_accuracy = sum(accuracyList) / len(accuracyList)
 
 plt.plot(accuracyList, label=f"Frame Accuracy")
-plt.axhline(y=mean_accuracy, color='r', linestyle='-', label=f"Mean Accuracy: {mean_accuracy:.2f}")
+plt.axhline(y=mean_accuracy, color='r', linestyle='-', label=f"Mean Accuracy: {mean_accuracy:.4f}")
 plt.xlabel('Frame Index')
 plt.ylabel('Accuracy')
-plt.title('YoloV8n Single Camera Accuracy')
+plt.title('YoloV8l Single Camera Accuracy')
 plt.legend() # This will display the legend
 plt.show()

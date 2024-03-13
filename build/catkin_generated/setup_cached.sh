@@ -7,10 +7,5 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/student/pphauRos1_ws/devel:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/home/student/pphauRos1_ws/devel/lib:$LD_LIBRARY_PATH"
 export PATH='/opt/ros/noetic/bin:/usr/local/cuda/bin/:/usr/local/cuda/bin/:/home/tueilmt-lab-pc/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
-export PKG_CONFIG_PATH="/home/student/pphauRos1_ws/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/student/pphauRos1_ws/build'
-export ROSLISP_PACKAGE_DIRECTORIES='/home/student/pphauRos1_ws/devel/share/common-lisp'
-export ROS_PACKAGE_PATH="/home/student/pphauRos1_ws/src:$ROS_PACKAGE_PATH"
