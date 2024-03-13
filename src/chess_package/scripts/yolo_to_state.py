@@ -130,6 +130,7 @@ class Im2YoloManager:
         out_msg += sum(game_map,[])
 
         cmd.data = out_msg
+        print("serden ben")
         #print(f"Veysel {out_msg}")
         # self.id += 1
         # name = "yolo2stat" + str(self.id) + ".txt"
