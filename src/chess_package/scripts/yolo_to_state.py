@@ -93,8 +93,8 @@ class Im2YoloManager:
         rospy.loginfo("Node has been started.")
         self.grids = []
         self.id = 1
-        if os.path.exists('GTpieces.txt'):
-            os.remove('GTpieces.txt')
+        if os.path.exists('pieces.txt'):
+            os.remove('pieces.txt')
 
 
     def pose_callback(self, yol: UInt16MultiArray):
