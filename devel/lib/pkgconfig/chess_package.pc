@@ -1,0 +1,8 @@
+prefix=/home/student/pphauRos1_ws/devel
+
+Name: chess_package
+Description: Description of chess_package
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
