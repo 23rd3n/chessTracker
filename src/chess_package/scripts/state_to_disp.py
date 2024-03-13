@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import threading
 import os
 
-timingFlag = False
+timingFlag = True
 pieceFlag = False
 
 
@@ -25,12 +25,8 @@ class Im2YoloManager:
         
         self.id = -1
         if timingFlag:
-            self.txtID = 0
-            nameFile = 'timing.txt'
-            while os.path.exists(nameFile):
-                self.txtID += 1
-                nameFile = 'timing' + str(self.txtID) + '.txt'
-            self.txtName = nameFile
+            if os.path.exists('timing.txt'):
+                os.remove('timing.txt')
 
 
 
@@ -54,7 +50,7 @@ class Im2YoloManager:
             finalStr = state_info.layout.dim[0].label + '/' + str(int(1000*time.perf_counter() - milsec_st)) 
             str_values = finalStr.split('/')
             if len(str_values) == 4:
-                with open(self.txtName, 'a') as file: 
+                with open('timing.txt', 'a') as file: 
                     file.write(' '.join(str_values) + '\n')
 
     def convertGameState(self,msgList):

@@ -3,6 +3,7 @@ import rospy
 from std_msgs.msg import UInt16MultiArray
 from std_msgs.msg import MultiArrayDimension
 import time
+import os
 
 def dst(pt1, pt2):
     return ((pt1[0]-pt2[0])**2 + (pt1[1]-pt2[1])**2 )**.5
@@ -92,6 +93,8 @@ class Im2YoloManager:
         rospy.loginfo("Node has been started.")
         self.grids = []
         self.id = 1
+        if os.path.exists('GTpieces.txt'):
+            os.remove('GTpieces.txt')
 
 
     def pose_callback(self, yol: UInt16MultiArray):
