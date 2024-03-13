@@ -19,31 +19,26 @@ class Ros2ImManager:
 
     def __init__(self) -> None:
         rospy.init_node("ros2im")
-        self.c1_sub = Subscriber("/camera/138422075916/color/image_raw", Image)
-        self.c2_sub = Subscriber( "/camera/137322071489/color/image_raw", Image)
 
         self.pub =rospy.Publisher("/im", UInt16MultiArray, queue_size=10)
-
-        self.ts = ApproximateTimeSynchronizer(
-            [self.c1_sub, self.c2_sub],queue_size,coupling_delay)
-        self.ts.registerCallback(self.pose_callback)
+        self.sub = rospy.Subscriber ("/camera/C138422075916/color/image_raw", Image, callback=self.pose_callback)
+        rospy.loginfo("Node has been started.")
 
         self.br = CvBridge()
         self.i=0
         self.frame = None
+
         self.display_thread = threading.Thread(target=self.display_camera)
         self.display_thread.start()
 
 
-        rospy.loginfo("Node has been started.")
-
-    def pose_callback(self, image1: Image, image2:Image):
+    def pose_callback(self, image1: Image):
         milsec_st =  1000*time.perf_counter()
         dimString = MultiArrayDimension()
         cmd = UInt16MultiArray() 
         self.frame = self.br.imgmsg_to_cv2(image1)
         if self.i % 5 == 0: 
-            cmd.data = list(image1.data) + list(image2.data)
+            cmd.data = list(image1.data)
             cmd.data.append(self.i)
             dimString.label = str(int(1000*time.perf_counter() - milsec_st)) 
             cmd.layout.dim = [dimString]
