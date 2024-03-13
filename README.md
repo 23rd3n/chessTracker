@@ -1,6 +1,6 @@
 # Final Project for Project Human Activity Understanding 
 ## Chess pieces recognition using YOLO models
-
+**NOTE** Commit history does not tell anything with work distribution. We used same account in every PC.
 **Contributors**
 - Serden Sait Eranil
 - Firdevs Su Aydin
