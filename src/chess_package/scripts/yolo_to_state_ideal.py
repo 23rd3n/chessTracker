@@ -118,7 +118,12 @@ class Im2YoloManager:
             out_msg += sum(game_map,[])
             #
             cmd.data = out_msg
+
             #print(f"Veysel {out_msg}")
+            stream_string = ' '.join(map(str, out_msg[1:]))  # This creates a comma-separated string from the list
+            with open('GTpieces.txt', 'a') as file:
+                file.write(stream_string + '\n')
+
             dimString.label = yol.layout.dim[0].label + '/' + str(int(1000*time.perf_counter() - milsec_st)) 
             cmd.layout.dim = [dimString]
 
