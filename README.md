@@ -21,7 +21,7 @@ Here are some demonstration videos of the project in action:
 
 ### Demo Videos
 
-https://user-images.githubusercontent.com/z3rd3n/chessTracker/main/multiMediumNoAcc.mp4
+[video](https://user-images.githubusercontent.com/z3rd3n/chessTracker/main/multiMediumNoAcc.mp4)
 
 https://user-images.githubusercontent.comz3rd3n/chessTracker/main/singleMediumNoACC.mp4
 
