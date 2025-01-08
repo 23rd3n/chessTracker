@@ -21,10 +21,9 @@ Here are some demonstration videos of the project in action:
 
 ### Demo Videos
 
-https://raw.githubusercontent.com/z3rd3n/chessTracker/main/multiMediumNoAcc.mp4
+https://user-images.githubusercontent.com/z3rd3n/chessTracker/main/multiMediumNoAcc.mp4
 
-https://raw.githubusercontent.com/z3rd3n/chessTracker/main/singleMediumNoACC.mp4
+https://user-images.githubusercontent.comz3rd3n/chessTracker/main/singleMediumNoACC.mp4
 
-https://raw.githubusercontent.com/z3rd3n/chessTracker/main/singleMediumNoACC.mp4
+https://user-images.githubusercontent.comz3rd3n/chessTracker/main/singleMediumNoACC.mp4
 
-Note: GitHub will automatically render MP4 files in markdown when using the standard image syntax.
