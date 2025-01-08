@@ -28,3 +28,6 @@ Here are some demonstration videos of the project in action:
 
 ### For annotation of the segmented chess pieces we used CVAT
 [Annotation using CVAT](annotation.gif)
+
+
+### For more detail, please look at the presentation of the project.
