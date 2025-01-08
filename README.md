@@ -15,5 +15,14 @@
 - if no argument is given then automatically accuray model will start working.
 
 
+### Demo Videos
+Here are some demonstration videos of the project in action:
 
 
+![Multi Camera YOLOv8 medium model segmentation based tracking](multiMediumNoAcc.mp4)
+
+![Single Camera YOLOv8 medium model segmentation based tracking without ground-truth video](singleMediumNoACC.mp4)
+
+![Single Camera YOLOv8 medium model segmentation based tracking with ground-truth video](singleMediumNoACC.mp4)
+
+Note: GitHub will automatically render MP4 files in markdown when using the standard image syntax.
