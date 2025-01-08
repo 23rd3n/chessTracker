@@ -19,10 +19,12 @@
 Here are some demonstration videos of the project in action:
 
 
-![Multi Camera YOLOv8 medium model segmentation based tracking](multiMediumNoAcc.mp4)
+### Demo Videos
 
-![Single Camera YOLOv8 medium model segmentation based tracking without ground-truth video](singleMediumNoACC.mp4)
+https://raw.githubusercontent.com/z3rd3n/chessTracker/main/multiMediumNoAcc.mp4
 
-![Single Camera YOLOv8 medium model segmentation based tracking with ground-truth video](singleMediumNoACC.mp4)
+https://raw.githubusercontent.com/z3rd3n/chessTracker/main/singleMediumNoACC.mp4
+
+https://raw.githubusercontent.com/z3rd3n/chessTracker/main/singleMediumNoACC.mp4
 
 Note: GitHub will automatically render MP4 files in markdown when using the standard image syntax.
