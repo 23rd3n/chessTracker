@@ -21,6 +21,6 @@ Here are some demonstration videos of the project in action:
 
 [Multi Camera YOLOv8 medium model segmentation based tracking](multiMediumNoAcc.mp4)
 
-![Single Camera YOLOv8 medium model segmentation based tracking without ground-truth video](singleMediumNoACC.mp4)
+[Single Camera YOLOv8 medium model segmentation based tracking without ground-truth video](singleMediumNoACC.mp4)
 
-![Single Camera YOLOv8 medium model segmentation based tracking with ground-truth video](singleMediumNoACC.mp4)
+[Single Camera YOLOv8 medium model segmentation based tracking with ground-truth video](singleMediumNoACC.mp4)
