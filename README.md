@@ -27,3 +27,7 @@ https://user-images.githubusercontent.comz3rd3n/chessTracker/main/singleMediumNo
 
 https://user-images.githubusercontent.comz3rd3n/chessTracker/main/singleMediumNoACC.mp4
 
+
+**Multi Camera YOLOv8 medium model segmentation based tracking**
+https://github.com/user-attachments/assets/8c254cd4-55bf-40ea-9e10-9789a4034a1a
+
