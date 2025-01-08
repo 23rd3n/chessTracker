@@ -24,3 +24,7 @@ Here are some demonstration videos of the project in action:
 [Single Camera YOLOv8 medium model segmentation based tracking without ground-truth video](singleMediumNoACC.mp4)
 
 [Single Camera YOLOv8 medium model segmentation based tracking with ground-truth video](singleMediumNoACC.mp4)
+
+
+### For annotation of the segmented chess pieces we used CVAT
+[Annotation using CVAT](annotation.gif)
